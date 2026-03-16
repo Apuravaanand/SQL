@@ -193,63 +193,9 @@ COMMIT;
 
 
 
-
-
-
-
--- ===================================================
--- PRACTICE QUERIES FOR WEB DEV
--- ===================================================
--- 1. Users signed up in last 7 days
-SELECT * FROM users WHERE created_at >= NOW() - INTERVAL 7 DAY;
-
--- 2. Top 5 selling products
-SELECT name,SUM(total) AS sales
-FROM products p
-INNER JOIN orders o ON p.id=o.id
-GROUP BY p.id
-ORDER BY sales DESC LIMIT 5;
-
--- 3. Users without orders
-SELECT u.name FROM users u
-LEFT JOIN orders o ON u.id=o.user_id
-WHERE o.id IS NULL;
-
--- 4. Average order value per user
-SELECT user_id, AVG(total) AS avg_order
-FROM orders
-GROUP BY user_id;
-
--- 5. Update email for a user
-UPDATE users SET email='new@mail.com' WHERE id=2;
-
--- 6. Delete old completed orders
-DELETE FROM orders WHERE status='completed' AND created_at < NOW() - INTERVAL 30 DAY;
-
--- 7. Show user orders with products
-SELECT u.name, p.name AS product_name, o.total
-FROM users u
-INNER JOIN orders o ON u.id=o.user_id
-INNER JOIN products p ON p.id=o.id;
-
--- 8. Mark VIP users based on total purchase
-SELECT u.name,
-CASE WHEN SUM(o.total) >=50000 THEN 'VIP' ELSE 'Regular' END AS type
-FROM users u
-INNER JOIN orders o ON u.id=o.user_id
-GROUP BY u.id;
-
--- 9. Fetch recent 10 orders
-SELECT * FROM orders ORDER BY created_at DESC LIMIT 10;
-
--- 10. Count users per signup month
-SELECT MONTH(created_at) AS month, COUNT(*) AS total_users
-FROM users
-GROUP BY MONTH(created_at);
-
-
 SQL Practice Questions for Web/Full-Stack Developers (50 Questions)
 1. Basics & CRUD (1–10)
+
 Create a database called web_app_db.
 
 Create a table users with columns: id, name, email, password, created_at.
@@ -257,7 +203,9 @@ Create a table users with columns: id, name, email, password, created_at.
 Insert 5 users into the users table.
 
 Select all columns from users.
+
 Select only name and email from users.
+
 Update the name of a user with id=2.
 
 Delete a user with id=5.
@@ -353,7 +301,11 @@ Use CASE to show 'New' for users signed up in last 7 days.
 8. Window Functions & CTEs (46–50)
 
 Assign row numbers to users ordered by signup date.
+
 Rank users by total order value using RANK().
+
 Dense rank users by number of orders.
+
 Use a CTE to get recent orders in last 30 days.
-Use a CTE to calculate total order value per user and filter total>50,000.# SQL
+
+Use a CTE to calculate total order value per user and filter total>50,000.
