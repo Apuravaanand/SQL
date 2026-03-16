@@ -1,51 +1,71 @@
--- ===================================================
-<h2>DATABASE CREATION</h2>
-<p> A database is a structured collection of data.</p>
--- ===================================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQL Mastery Cheatsheet</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; background-color: #f5f5f5; }
+  h1, h2 { color: #2c3e50; }
+  pre { background: #2d2d2d; color: #f8f8f2; padding: 15px; overflow-x: auto; border-radius: 5px; }
+  code { font-family: monospace; }
+  ol { margin-left: 20px; }
+  li { margin-bottom: 5px; }
+  .section { margin-bottom: 40px; }
+</style>
+</head>
+<body>
 
-CREATE DATABASE web_app_db;
-USE web_app_db;
+<h1>SQL Mastery Cheatsheet for Full-Stack / Web Developers</h1>
 
--- ===================================================
-<h2>TABLE CREATION</h2>
-<p>Define table structure with columns, types, and constraints</p>
--- ===================================================
+<p>This guide contains a complete SQL mastery reference including database creation, table setup, CRUD, joins, aggregations, advanced queries, transactions, indexing, security, and 50 practice questions for hands-on learning.</p>
 
-CREATE TABLE users (
-id INT PRIMARY KEY AUTO_INCREMENT,
-name VARCHAR(50) NOT NULL,
-email VARCHAR(100) UNIQUE NOT NULL,
-password_hash VARCHAR(255) NOT NULL,
-created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+<hr>
+
+<div class="section">
+<h2>Database Creation</h2>
+<p>A database is a structured collection of data.</p>
+<pre><code>CREATE DATABASE web_app_db;
+USE web_app_db;</code></pre>
+</div>
+
+<div class="section">
+<h2>Table Creation</h2>
+<p>Define tables with columns, data types, and constraints.</p>
+<pre><code>CREATE TABLE users (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(50) NOT NULL,
+  email VARCHAR(100) UNIQUE NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE products (
-id INT PRIMARY KEY AUTO_INCREMENT,
-name VARCHAR(100),
-price DECIMAL(10,2),
-created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(100),
+  price DECIMAL(10,2),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE orders (
-id INT PRIMARY KEY AUTO_INCREMENT,
-user_id INT,
-total DECIMAL(10,2),
-status VARCHAR(20),
-FOREIGN KEY(user_id) REFERENCES users(id)
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  user_id INT,
+  total DECIMAL(10,2),
+  status VARCHAR(20),
+  FOREIGN KEY(user_id) REFERENCES users(id)
 );
 
 CREATE TABLE enrollments (
-id INT PRIMARY KEY AUTO_INCREMENT,
-student_id INT,
-course_id INT,
-FOREIGN KEY(student_id) REFERENCES users(id)
-);
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  student_id INT,
+  course_id INT,
+  FOREIGN KEY(student_id) REFERENCES users(id)
+);</code></pre>
+</div>
 
--- ===================================================
-<h2>INSERT DATA</h2>
--- ===================================================
-
-INSERT INTO users (name,email,password_hash) VALUES
+<div class="section">
+<h2>Insert Data</h2>
+<pre><code>INSERT INTO users (name,email,password_hash) VALUES
 ('Apurava','apurava@mail.com','hashed1'),
 ('Anand','anand@mail.com','hashed2');
 
@@ -55,45 +75,42 @@ INSERT INTO products (name,price) VALUES
 
 INSERT INTO orders (user_id,total,status) VALUES
 (1,50000,'pending'),
-(2,50500,'completed');
+(2,50500,'completed');</code></pre>
+</div>
 
--- ===================================================
-<h2>SELECT & FILTERING</h2>
--- ===================================================
-
-SELECT * FROM users;
+<div class="section">
+<h2>Select & Filtering</h2>
+<pre><code>SELECT * FROM users;
 SELECT name,email FROM users;
 SELECT * FROM users WHERE id=1;
 SELECT * FROM users WHERE id>1 AND email LIKE '%mail.com';
 SELECT * FROM products WHERE price BETWEEN 100 AND 100000;
-SELECT * FROM orders WHERE status IN ('pending','completed');
+SELECT * FROM orders WHERE status IN ('pending','completed');</code></pre>
+</div>
 
--- ===================================================
-<h2>SORTING & PAGINATION</h2>
--- ===================================================
+<div class="section">
+<h2>Sorting & Pagination</h2>
+<pre><code>SELECT * FROM users ORDER BY created_at DESC;
+SELECT * FROM products ORDER BY price ASC LIMIT 5 OFFSET 0;</code></pre>
+</div>
 
-SELECT * FROM users ORDER BY created_at DESC;
-SELECT * FROM products ORDER BY price ASC LIMIT 5 OFFSET 0;
-
--- ===================================================
-<h2>AGGREGATION</h2>
--- ===================================================
-
-SELECT COUNT(*) FROM users;
+<div class="section">
+<h2>Aggregation</h2>
+<pre><code>SELECT COUNT(*) FROM users;
 SELECT SUM(total) FROM orders;
 SELECT AVG(price) FROM products;
 SELECT MIN(price) FROM products;
 SELECT MAX(total) FROM orders;
+
 SELECT user_id, COUNT(*) AS total_orders
 FROM orders
 GROUP BY user_id
-HAVING COUNT(*)>0;
+HAVING COUNT(*)>0;</code></pre>
+</div>
 
--- ===================================================
-<h2>JOINS</h2>
--- ===================================================
-
--- INNER JOIN
+<div class="section">
+<h2>Joins</h2>
+<pre><code>-- INNER JOIN
 SELECT users.name, orders.total
 FROM users
 INNER JOIN orders ON users.id = orders.user_id;
@@ -111,201 +128,131 @@ RIGHT JOIN orders ON users.id = orders.user_id;
 -- FULL JOIN (PostgreSQL)
 SELECT users.name, orders.total
 FROM users
-FULL OUTER JOIN orders ON users.id = orders.user_id;
+FULL OUTER JOIN orders ON users.id = orders.user_id;</code></pre>
+</div>
 
--- ===================================================
-<h2>SUBQUERIES & EXISTS</h2>
--- ===================================================
+<div class="section">
+<h2>Subqueries & EXISTS</h2>
+<pre><code>SELECT name FROM users WHERE id IN (SELECT user_id FROM orders WHERE total>50000);
+SELECT name FROM users u WHERE EXISTS (SELECT * FROM orders o WHERE u.id=o.user_id);</code></pre>
+</div>
 
-SELECT name FROM users WHERE id IN (SELECT user_id FROM orders WHERE total>50000);
-
-SELECT name FROM users u WHERE EXISTS (SELECT * FROM orders o WHERE u.id=o.user_id);
-
--- ===================================================
-<h2>CASE STATEMENTS</h2>
--- ===================================================
-
-SELECT name,
+<div class="section">
+<h2>CASE Statements</h2>
+<pre><code>SELECT name,
 CASE WHEN total>=50000 THEN 'VIP'
 ELSE 'Regular'
 END AS customer_type
 FROM users
-INNER JOIN orders ON users.id=orders.user_id;
+INNER JOIN orders ON users.id=orders.user_id;</code></pre>
+</div>
 
--- ===================================================
-<h2>WINDOW FUNCTIONS</h2>
--- ===================================================
-
-SELECT name, ROW_NUMBER() OVER(ORDER BY created_at DESC) AS row_num
+<div class="section">
+<h2>Window Functions</h2>
+<pre><code>SELECT name, ROW_NUMBER() OVER(ORDER BY created_at DESC) AS row_num
 FROM users;
 
 SELECT name, RANK() OVER(ORDER BY created_at DESC) AS rank_num
 FROM users;
 
 SELECT name, DENSE_RANK() OVER(ORDER BY created_at DESC) AS dense_rank_num
-FROM users;
+FROM users;</code></pre>
+</div>
 
--- ===================================================
+<div class="section">
 <h2>CTE (Common Table Expression)</h2>
--- ===================================================
-
-WITH recent_orders AS (
-SELECT * FROM orders WHERE created_at >= NOW() - INTERVAL 7 DAY
+<pre><code>WITH recent_orders AS (
+  SELECT * FROM orders WHERE created_at >= NOW() - INTERVAL 7 DAY
 )
-SELECT * FROM recent_orders;
+SELECT * FROM recent_orders;</code></pre>
+</div>
 
--- ===================================================
+<div class="section">
 <h2>UNION</h2>
--- ===================================================
+<pre><code>SELECT name FROM users
+UNION
+SELECT name FROM admins;</code></pre>
+</div>
 
-SELECT name FROM users UNION
-SELECT name FROM admins;
+<div class="section">
+<h2>Update & Delete</h2>
+<pre><code>UPDATE users SET name='Apurava Anand' WHERE id=1;
+DELETE FROM orders WHERE status='pending';</code></pre>
+</div>
 
--- ===================================================
-<h2>UPDATE & DELETE</h2>
--- ===================================================
-UPDATE users SET name='Apurava Anand' WHERE id=1;
-DELETE FROM orders WHERE status='pending';
+<div class="section">
+<h2>Indexing</h2>
+<pre><code>CREATE INDEX idx_users_email ON users(email);</code></pre>
+</div>
 
--- ===================================================
-<h2>INDEXING</h2>
--- ===================================================
-CREATE INDEX idx_users_email ON users(email);
-
--- ===================================================
-<h2>TRANSACTIONS</h2>
--- ===================================================
-
-BEGIN;
+<div class="section">
+<h2>Transactions</h2>
+<pre><code>BEGIN;
 UPDATE users SET balance=balance-100 WHERE id=1;
 UPDATE users SET balance=balance+100 WHERE id=2;
-COMMIT;
-
--- ===================================================
-<h2>SECURITY / PREVENT SQL INJECTION</h2>
--- ===================================================
--- Always use parameterized queries in your backend framework (Node.js, Python, PHP)
-
-
-
-
-
-
-
-
-SQL Practice Questions for Web/Full-Stack Developers (50 Questions)
-1. Basics & CRUD (1–10)
-
-Create a database called web_app_db.
-
-Create a table users with columns: id, name, email, password, created_at.
-
-Insert 5 users into the users table.
-
-Select all columns from users.
-
-Select only name and email from users.
-
-Update the name of a user with id=2.
-
-Delete a user with id=5.
-
-Filter users whose age > 25.
-
-Filter users whose name starts with 'A'.
-
-Select unique ages from users.
-
-2. Sorting & Pagination (11–15)
-
-Select all users ordered by created_at descending.
-
-Select the first 5 users using LIMIT.
-
-Skip the first 10 users and fetch the next 5.
-
-Select products ordered by price ascending.
-
-Fetch the last 10 orders by created_at.
-
-3. Aggregation & Grouping (16–25)
-
-Count total users in the users table.
-
-Find the average age of users.
-
-Find the sum of all order totals.
-
-Find the minimum and maximum product price.
-
-Count orders per user.
-
-Count users grouped by city.
-
-Find users with more than 2 orders (HAVING).
-
-Calculate total sales per product.
-
-Find the number of products in each category.
-
-Calculate average order total per month.
-
-4. Filtering & Conditions (26–30)
-
-Select users whose city is either 'Delhi' or 'Mumbai'.
-
-Select products with price between 500 and 5000.
-
-Select users created in the last 7 days.
-
-Select users who have either age>25 or city='Delhi'.
-
-Select orders where status is not 'completed'.
-
-5. Joins (31–37)
-
-Get all user names with their order totals (INNER JOIN).
-
-Get all users with orders, including users with no orders (LEFT JOIN).
-
-Get all orders including orders without users (RIGHT JOIN).
-
-Get products with their category names (INNER JOIN).
-
-Count total orders per user using JOIN.
-
-Get user names with products they ordered (JOIN multiple tables).
-
-Fetch users and orders with FULL OUTER JOIN (PostgreSQL).
-
-6. Subqueries & EXISTS (38–42)
-
-Select users who have placed orders > 5000.
-
-Select products that have never been ordered.
-
-Use EXISTS to select users who have orders.
-
-Use a subquery to find orders above average total.
-
-Use a nested query to select users who enrolled in a course.
-
-7. CASE & Conditional Queries (43–45)
-
-Mark users as 'VIP' if total purchase >= 50,000 else 'Regular'.
-
-Categorize products as 'Expensive', 'Moderate', 'Cheap' based on price.
-
-Use CASE to show 'New' for users signed up in last 7 days.
-
-8. Window Functions & CTEs (46–50)
-
-Assign row numbers to users ordered by signup date.
-
-Rank users by total order value using RANK().
-
-Dense rank users by number of orders.
-
-Use a CTE to get recent orders in last 30 days.
-
-Use a CTE to calculate total order value per user and filter total>50,000.
+COMMIT;</code></pre>
+</div>
+
+<div class="section">
+<h2>Security / Prevent SQL Injection</h2>
+<p>Always use <strong>parameterized queries</strong> in backend frameworks like Node.js, Python, PHP. Never concatenate user input directly.</p>
+</div>
+
+<div class="section">
+<h2>SQL Practice Questions (50)</h2>
+<ol>
+  <li>Create a database called <code>web_app_db</code>.</li>
+  <li>Create a table <code>users</code> with id, name, email, password, created_at.</li>
+  <li>Insert 5 users into <code>users</code>.</li>
+  <li>Select all columns from <code>users</code>.</li>
+  <li>Select only <code>name</code> and <code>email</code>.</li>
+  <li>Update name of user with id=2.</li>
+  <li>Delete user with id=5.</li>
+  <li>Filter users with age &gt; 25.</li>
+  <li>Filter users with name starting with 'A'.</li>
+  <li>Select unique ages.</li>
+  <li>Select all users ordered by <code>created_at</code> descending.</li>
+  <li>Select first 5 users using <code>LIMIT</code>.</li>
+  <li>Skip first 10 users, fetch next 5.</li>
+  <li>Select products ordered by price ascending.</li>
+  <li>Fetch last 10 orders by <code>created_at</code>.</li>
+  <li>Count total users.</li>
+  <li>Average age of users.</li>
+  <li>Sum of all order totals.</li>
+  <li>Minimum and maximum product price.</li>
+  <li>Count orders per user.</li>
+  <li>Count users grouped by city.</li>
+  <li>Users with more than 2 orders (HAVING).</li>
+  <li>Total sales per product.</li>
+  <li>Number of products per category.</li>
+  <li>Average order total per month.</li>
+  <li>Users in 'Delhi' or 'Mumbai'.</li>
+  <li>Products with price 500–5000.</li>
+  <li>Users created in last 7 days.</li>
+  <li>Users with age&gt;25 or city='Delhi'.</li>
+  <li>Orders not 'completed'.</li>
+  <li>User names with order totals (INNER JOIN).</li>
+  <li>Users with orders, including users without orders (LEFT JOIN).</li>
+  <li>Orders including orders without users (RIGHT JOIN).</li>
+  <li>Products with category names (INNER JOIN).</li>
+  <li>Count total orders per user.</li>
+  <li>User names with products they ordered (JOIN multiple tables).</li>
+  <li>Users and orders with FULL OUTER JOIN.</li>
+  <li>Users with orders &gt; 5000.</li>
+  <li>Products never ordered.</li>
+  <li>Users with orders (EXISTS).</li>
+  <li>Orders above average total (subquery).</li>
+  <li>Users enrolled in a course (nested query).</li>
+  <li>Mark users as 'VIP' if total purchase &gt;=50,000 else 'Regular'.</li>
+  <li>Categorize products as 'Expensive', 'Moderate', 'Cheap'.</li>
+  <li>Mark 'New' for users signed up in last 7 days.</li>
+  <li>Row numbers to users by signup date.</li>
+  <li>Rank users by total order value (RANK()).</li>
+  <li>Dense rank users by number of orders.</li>
+  <li>CTE: recent orders in last 30 days.</li>
+  <li>CTE: total order value per user &gt;50,000.</li>
+</ol>
+</div>
+
+</body>
+</html>
