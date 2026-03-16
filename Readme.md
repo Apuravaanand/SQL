@@ -1,21 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SQL Mastery Cheatsheet</title>
-<style>
-  body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; background-color: #f5f5f5; }
-  h1, h2 { color: #2c3e50; }
-  pre { background: #2d2d2d; color: #f8f8f2; padding: 15px; overflow-x: auto; border-radius: 5px; }
-  code { font-family: monospace; }
-  ol { margin-left: 20px; }
-  li { margin-bottom: 5px; }
-  .section { margin-bottom: 40px; }
-</style>
-</head>
-<body>
-
 <h1>SQL Mastery Cheatsheet for Full-Stack / Web Developers</h1>
 
 <p>This guide contains a complete SQL mastery reference including database creation, table setup, CRUD, joins, aggregations, advanced queries, transactions, indexing, security, and 50 practice questions for hands-on learning.</p>
