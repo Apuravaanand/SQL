@@ -1,6 +1,5 @@
--- ===================================================
--- DATABASE CREATION
--- ===================================================
+<h2>DATABASE CREATION</h2>
+
 -- A database is a structured collection of data.
 CREATE DATABASE web_app_db;
 USE web_app_db;
