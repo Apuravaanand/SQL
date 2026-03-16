@@ -1,13 +1,16 @@
+-- ===================================================
 <h2>DATABASE CREATION</h2>
+<p> A database is a structured collection of data.</p>
+-- ===================================================
 
--- A database is a structured collection of data.
 CREATE DATABASE web_app_db;
 USE web_app_db;
 
 -- ===================================================
--- TABLE CREATION
+<h2>TABLE CREATION</h2>
+<p>Define table structure with columns, types, and constraints</p>
 -- ===================================================
--- Define table structure with columns, types, and constraints
+
 CREATE TABLE users (
 id INT PRIMARY KEY AUTO_INCREMENT,
 name VARCHAR(50) NOT NULL,
@@ -39,8 +42,9 @@ FOREIGN KEY(student_id) REFERENCES users(id)
 );
 
 -- ===================================================
--- INSERT DATA
+<h2>INSERT DATA</h2>
 -- ===================================================
+
 INSERT INTO users (name,email,password_hash) VALUES
 ('Apurava','apurava@mail.com','hashed1'),
 ('Anand','anand@mail.com','hashed2');
@@ -54,8 +58,9 @@ INSERT INTO orders (user_id,total,status) VALUES
 (2,50500,'completed');
 
 -- ===================================================
--- SELECT & FILTERING
+<h2>SELECT & FILTERING</h2>
 -- ===================================================
+
 SELECT * FROM users;
 SELECT name,email FROM users;
 SELECT * FROM users WHERE id=1;
@@ -64,14 +69,16 @@ SELECT * FROM products WHERE price BETWEEN 100 AND 100000;
 SELECT * FROM orders WHERE status IN ('pending','completed');
 
 -- ===================================================
--- SORTING & PAGINATION
+<h2>SORTING & PAGINATION</h2>
 -- ===================================================
+
 SELECT * FROM users ORDER BY created_at DESC;
 SELECT * FROM products ORDER BY price ASC LIMIT 5 OFFSET 0;
 
 -- ===================================================
--- AGGREGATION
+<h2>AGGREGATION</h2>
 -- ===================================================
+
 SELECT COUNT(*) FROM users;
 SELECT SUM(total) FROM orders;
 SELECT AVG(price) FROM products;
@@ -83,8 +90,9 @@ GROUP BY user_id
 HAVING COUNT(*)>0;
 
 -- ===================================================
--- JOINS
+<h2>JOINS</h2>
 -- ===================================================
+
 -- INNER JOIN
 SELECT users.name, orders.total
 FROM users
@@ -106,15 +114,17 @@ FROM users
 FULL OUTER JOIN orders ON users.id = orders.user_id;
 
 -- ===================================================
--- SUBQUERIES & EXISTS
+<h2>SUBQUERIES & EXISTS</h2>
 -- ===================================================
+
 SELECT name FROM users WHERE id IN (SELECT user_id FROM orders WHERE total>50000);
 
 SELECT name FROM users u WHERE EXISTS (SELECT * FROM orders o WHERE u.id=o.user_id);
 
 -- ===================================================
--- CASE STATEMENTS
+<h2>CASE STATEMENTS</h2>
 -- ===================================================
+
 SELECT name,
 CASE WHEN total>=50000 THEN 'VIP'
 ELSE 'Regular'
@@ -123,8 +133,9 @@ FROM users
 INNER JOIN orders ON users.id=orders.user_id;
 
 -- ===================================================
--- WINDOW FUNCTIONS
+<h2>WINDOW FUNCTIONS</h2>
 -- ===================================================
+
 SELECT name, ROW_NUMBER() OVER(ORDER BY created_at DESC) AS row_num
 FROM users;
 
@@ -135,43 +146,56 @@ SELECT name, DENSE_RANK() OVER(ORDER BY created_at DESC) AS dense_rank_num
 FROM users;
 
 -- ===================================================
--- CTE (Common Table Expression)
+<h2>CTE (Common Table Expression)</h2>
 -- ===================================================
+
 WITH recent_orders AS (
 SELECT * FROM orders WHERE created_at >= NOW() - INTERVAL 7 DAY
 )
 SELECT * FROM recent_orders;
 
 -- ===================================================
--- UNION
+<h2>UNION</h2>
 -- ===================================================
-SELECT name FROM users
-UNION
+
+SELECT name FROM users UNION
 SELECT name FROM admins;
 
 -- ===================================================
--- UPDATE & DELETE
+<h2>UPDATE & DELETE</h2>
 -- ===================================================
 UPDATE users SET name='Apurava Anand' WHERE id=1;
 DELETE FROM orders WHERE status='pending';
 
 -- ===================================================
--- INDEXING
+<h2>INDEXING</h2>
 -- ===================================================
 CREATE INDEX idx_users_email ON users(email);
 
 -- ===================================================
--- TRANSACTIONS
+<h2>TRANSACTIONS</h2>
 -- ===================================================
+
 BEGIN;
 UPDATE users SET balance=balance-100 WHERE id=1;
 UPDATE users SET balance=balance+100 WHERE id=2;
 COMMIT;
 
 -- ===================================================
--- SECURITY / PREVENT SQL INJECTION
+<h2>SECURITY / PREVENT SQL INJECTION</h2>
 -- ===================================================
 -- Always use parameterized queries in your backend framework (Node.js, Python, PHP)
+
+
+
+
+
+
+
+
+
+
+
 
 -- ===================================================
 -- PRACTICE QUERIES FOR WEB DEV
